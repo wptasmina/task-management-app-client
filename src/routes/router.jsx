@@ -1,18 +1,21 @@
 
 import { createBrowserRouter } from "react-router-dom";
-import App from "../App";
+import ErrorPage from './../components/Page/ErrorPage';
+import Home from './../components/Page/HomePage/Home';
+import Task from './../components/Page/Task-Board-Component/Task';
+import Comments from './../components/Page/Task-Board-Component/Comments';
 
-import ErrorPage from "../component/Page/ErrorPage";
-import Home from './../component/Page/HomePage/Home';
-
-import Login from "../component/auth/Login/Login";
+import Ragister from "../components/auth/Ragister/Ragister";
+import MainLayouts from "../components/layouts/MainLayouts";
+import LoginPage from "../components/auth/Login/LoginPage";
+import Dashbord from "../components/Page/Task-Board-Component/Dashbord/Dashbord";
 
 
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <MainLayouts />,
     errorElement: <ErrorPage />,
     children: [
       {
@@ -20,8 +23,24 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: "/dashbord",
+        element: <Dashbord />,
+      },
+      {
         path: "/login",
-        element: <Login />,
+        element: <LoginPage />,
+      },
+      {
+        path: "/task",
+        element: <Task />,
+      },
+      {
+        path: "/comments/:category/:id",
+        element: <Comments />,
+      },
+      {
+        path: "/ragister",
+        element: <Ragister />,
       },
     ],
   },
