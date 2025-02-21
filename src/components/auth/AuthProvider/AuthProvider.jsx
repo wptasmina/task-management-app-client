@@ -35,15 +35,15 @@ export default function AuthProvider({children}) {
     return createUserWithEmailAndPassword( auth, email, password )
   }
 
-  //Login
-  const handleLogin = ( email, password) =>{
+  //Login / signInUser
+  const signInUser = ( email, password) =>{
     setLoading(true);
    return signInWithEmailAndPassword(auth, email, password)
 
   }
 
    //LogOut
-   const logOut = () =>{
+   const signOutUser = () =>{
     setLoading(true);
     return signOut(auth)
   }
@@ -81,9 +81,9 @@ export default function AuthProvider({children}) {
     user,
     loading,
     createUser,
-    handleLogin,
+    signInUser,
     handleGoogleLogin,
-    logOut,
+    signOutUser,
     updateUserProfile
   }
   
