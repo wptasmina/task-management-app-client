@@ -5,10 +5,11 @@ import { toast } from "react-toastify";
 import useAxiosPublic from "../hokes/useAxiosPublic";
 import { HiPencilAlt } from "react-icons/hi";
 import { RiDeleteBin6Fill } from "react-icons/ri";
+import axios from "axios";
 
 const categories = ["To-Do", "In Progress", "Done"];
 
-export default function TaskBoard({ socket }) {
+export default function TaskBoard() {
   const axiosPublic = useAxiosPublic();
 
   const [tasks, setTasks] = useState([]);
@@ -17,11 +18,13 @@ export default function TaskBoard({ socket }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
 
+
   // ✅ Fetch tasks from the server when the component mounts
   useEffect(() => {
     const fetchTasks = async () => {
       try {
         const response = await axiosPublic.get("/tasks");
+        console.log(response)
         setTasks(response.data); // Store fetched tasks
       } catch (err) {
         console.error("Error fetching tasks:", err);
@@ -32,7 +35,7 @@ export default function TaskBoard({ socket }) {
     };
 
     fetchTasks();
-  }, []);
+  }, [tasks]);
 
   // ✅ Submit form data (POST request)
   const onSubmit = async (data) => {
@@ -56,27 +59,6 @@ export default function TaskBoard({ socket }) {
     setModalOpen(false);
   };
 
-  // ✅ Handle drag & drop
-  const handleDragEnd = async (result) => {
-    if (!result.destination) return;
-
-    const updatedTasks = tasks.map((task) =>
-      task._id === result.draggableId
-        ? { ...task, category: result.destination.droppableId }
-        : task
-    );
-
-    setTasks(updatedTasks);
-
-    // ✅ Update task category in the server
-    try {
-      await axiosPublic.put(`/tasks/${result.draggableId}`, {
-        category: result.destination.droppableId,
-      });
-    } catch (error) {
-      console.error("Failed to update task:", error);
-    }
-  };
 
   // ✅ Delete task from server & update UI
   const handleDelete = async (id) => {
@@ -111,7 +93,7 @@ export default function TaskBoard({ socket }) {
       ) : error ? (
         <p className="text-red-500">{error}</p>
       ) : (
-        <DragDropContext onDragEnd={handleDragEnd}>
+        <DragDropContext  >
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {categories.map((category) => (
               <Droppable key={category} droppableId={category}>

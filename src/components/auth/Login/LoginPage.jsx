@@ -8,7 +8,8 @@ import { AuthContext } from "../AuthProvider/AuthProvider";
 import { toast } from "react-toastify";
 
 export default function LoginPage() {
-  const {signInUser } = useContext(AuthContext)
+
+  const {signInUser, handleGoogleLogin} = useContext(AuthContext)
   const navigate = useNavigate()
 
     // Password visibility state
@@ -36,7 +37,23 @@ export default function LoginPage() {
     
     form.reset()
 
+
   }
+
+    // Handle Google Login
+    const handleGoogleSignIn = async () => {
+      try {
+        await handleGoogleLogin();
+  
+        // Redirect user to home page or the path they were trying to access
+        const redirectPath = location.state?.from?.pathname || "/";
+        navigate(redirectPath);
+        toast.success("Welcome Back!");
+      } catch (error) {
+        toast.error("Google Sign-in failed");
+        console.error("Google Sign-in error:", error.message);
+      }
+    };
   
   return (
     <div className="hero bg-base-200 min-h-screen">

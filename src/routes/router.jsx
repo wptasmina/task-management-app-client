@@ -8,6 +8,7 @@ import MainLayouts from "../components/layouts/MainLayouts";
 import LoginPage from "../components/auth/Login/LoginPage";
 import Dashboard from "../components/Page/Task-Board-Component/Dashbord/Dashboard";
 import Task_Add from "../components/Page/Task-Board-Component/components/Add-Task/Task_Add";
+import TaskUpdate from "../components/Page/Task-Board-Component/components/Task/TaskUpdate";
 
 
 
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
       {
         path: "/add-task",
         element: <Task_Add />,
+      },
+      {
+        path: "/update-task/:id",
+        element: <TaskUpdate />,
       },
       // {
       //   path: "/comments/:category/:id",
