@@ -26,10 +26,6 @@ export const router = createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: "/login",
-        element: <LoginPage />,
-      },
-      {
         path: "/add-task",
         element: <Task_Add />,
       },
@@ -40,6 +36,10 @@ export const router = createBrowserRouter([
       {
         path: "/ragister",
         element: <Ragister />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
       },
     ],
   },

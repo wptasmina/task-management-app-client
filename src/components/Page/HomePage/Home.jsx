@@ -36,7 +36,7 @@ export default function Home() {
           transition={{ duration: 0.5 }}
           className="mt-6"
         >
-          <Link to="/register" className="px-6 py-3 bg-green-600 text-white rounded-lg text-lg">
+          <Link to="/ragister" className="px-6 py-3 bg-green-600 text-white rounded-lg text-lg">
             Sign Up Now
           </Link>
         </motion.div>

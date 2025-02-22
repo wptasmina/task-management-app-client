@@ -3,12 +3,14 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import TaskModal from "../TaskModal/TaskModal";
 import { toast } from "react-toastify";
 import useAxiosPublic from "../hokes/useAxiosPublic";
+import { HiPencilAlt } from "react-icons/hi";
+import { RiDeleteBin6Fill } from "react-icons/ri";
 
 const categories = ["To-Do", "In Progress", "Done"];
 
-export default function TaskBoard() {
+export default function TaskBoard({ socket }) {
   const axiosPublic = useAxiosPublic();
-  
+
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -59,7 +61,7 @@ export default function TaskBoard() {
     if (!result.destination) return;
 
     const updatedTasks = tasks.map((task) =>
-      task.id === result.draggableId
+      task._id === result.draggableId
         ? { ...task, category: result.destination.droppableId }
         : task
     );
@@ -73,6 +75,18 @@ export default function TaskBoard() {
       });
     } catch (error) {
       console.error("Failed to update task:", error);
+    }
+  };
+
+  // ✅ Delete task from server & update UI
+  const handleDelete = async (id) => {
+    try {
+      await axiosPublic.delete(`/tasks/${id}`);
+      setTasks(tasks.filter((task) => task._id !== id)); // Remove task from UI
+      toast.success("Task deleted successfully!");
+    } catch (error) {
+      console.error("Failed to delete task:", error);
+      toast.error("Failed to delete task.");
     }
   };
 
@@ -113,7 +127,8 @@ export default function TaskBoard() {
                     {tasks
                       .filter((task) => task.category === category)
                       .map((task, idx) => (
-                        <Draggable key={task.id} draggableId={task.id} index={idx}>
+                        task._id ? (
+                        <Draggable key={task._id}  draggableId={task._id.toString()} index={idx}>
                           {(provided) => (
                             <div
                               ref={provided.innerRef}
@@ -123,11 +138,26 @@ export default function TaskBoard() {
                               onClick={() => openModal(task)}
                             >
                               <h4 className="font-bold">{task.title}</h4>
-                              <p className="text-sm text-gray-500">{task.description}</p>
+                              <div className="flex justify-between items-center">
+                                <p className="text-sm text-gray-500">{task.description}</p>
+                               
+                              </div>
                               <span className="text-xs text-gray-400">{task.timestamp}</span>
+                              <div className="flex justify-center items-center py-4 gap-2">
+                                  <button onClick={() => openModal(task)}>
+                                    <HiPencilAlt className="text-xl text-blue-800" />
+                                  </button>
+                                  <button onClick={(e) => {
+                                      e.stopPropagation(); // Prevent event from triggering modal
+                                      handleDelete(task._id);
+                                    }}>
+                                    <RiDeleteBin6Fill className="text-xl text-red-500" />
+                                  </button>
+                                </div>
                             </div>
                           )}
                         </Draggable>
+                        ): null
                       ))}
                     {provided.placeholder}
                   </div>
@@ -144,3 +174,6 @@ export default function TaskBoard() {
     </div>
   );
 }
+
+
+

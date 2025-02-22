@@ -27,7 +27,7 @@ export default function LoginPage() {
           console.log("User successfully registered!");
           toast.success('User successfully registered!')
 
-          navigate("/")
+          navigate("/dashboard")
 
         } catch (error) {
           console.error("Registration failed:", error);

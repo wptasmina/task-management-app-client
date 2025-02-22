@@ -4,6 +4,7 @@ import { AuthContext } from '../auth/AuthProvider/AuthProvider';
 import { useContext } from 'react';
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { BsDatabaseFillDash } from "react-icons/bs";
+import { ImHome } from "react-icons/im";
 
 
 export default function Navbar({ darkMode, setDarkMode }) {
@@ -25,6 +26,9 @@ export default function Navbar({ darkMode, setDarkMode }) {
   // const navItemText = 'focus:text-blue-900 font-bold';
   const navItem = (
     <>
+    <Link to="/">
+      <ImHome className='text-xl cursor-pointer' />
+    </Link>
       {/* <li className={navItemText}><Link to="/">Home</Link></li>
       <li className={navItemText}><Link to="/dashboard">Dashboard</Link></li> */}
     </>
