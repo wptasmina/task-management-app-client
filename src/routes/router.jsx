@@ -34,10 +34,6 @@ export const router = createBrowserRouter([
         path: "/update-task/:id",
         element: <TaskUpdate />,
       },
-      // {
-      //   path: "/comments/:category/:id",
-      //   element: <Comments />,
-      // },
       {
         path: "/ragister",
         element: <Ragister />,

@@ -59,7 +59,7 @@ export default function Ragister() {
 
   return (
 <div>
-<div className="hero bg-base-200 min-h-screen">
+<div className=" bg-base-200 min-h-screen">
   <div className="hero-content flex-col lg:flex-row-reverse">
     <div className="text-center lg:text-left hidden md:block w-3/6">
        <Lottie animationData={register} />

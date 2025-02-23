@@ -1,8 +1,9 @@
 
 import Lottie from "lottie-react"
 import loginAm from "./loginBlack.json"
+import gImg from "../../../assets/google.webp";
 import { Link, useNavigate } from "react-router-dom";
-import { IoEye, IoEyeOff } from "react-icons/io5";
+import { IoEye, IoEyeOff, IoHome } from "react-icons/io5";
 import { useContext, useState } from "react";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 import { toast } from "react-toastify";
@@ -56,14 +57,17 @@ export default function LoginPage() {
     };
   
   return (
-    <div className="hero bg-base-200 min-h-screen">
+    <div className=" bg-base-200 min-h-screen">
   <div className="hero-content flex-col lg:flex-row-reverse">
     <div className="text-center lg:text-left hidden md:block w-3/6">
       
     <Lottie animationData={loginAm} />
     </div>
     <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-    <h1 className="text-4xl font-bold text-center pt-4">Login now!</h1>
+    <div className="flex justify-center gap-4 items-center pt-4">
+    <IoHome className="text-2xl"/>
+    <h1 className="text-4xl font-bold text-center ">Login now!</h1>
+    </div>
       <form onSubmit={hendleLogin} className="card-body">
         <fieldset className="fieldset">
           <label className="fieldset-label">Email</label>
@@ -91,6 +95,14 @@ export default function LoginPage() {
           <div><a className="link link-hover">Forgot password?</a></div>
           <input type="submit" value="Login" className="btn btn-neutral mt-4"/>
         </fieldset>
+        <div
+            className="flex justify-center  items-center gap-2 border md:gap-8 py-2 rounded-full hover:bg-[#EDF2FA]"
+              onClick={handleGoogleSignIn}>
+                  <img src={gImg} className="md:w-6 w-4 ml-4" alt="Google" />
+                 <div> 
+                  <h4 className="w-full font-medium cursor-pointer">Continue with Google</h4>
+                 </div>
+                </div>
         <div>
           <Link to="/ragister">
             <p className="text-center text-green-600 font-medium hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg duration-500">Create a new account</p>

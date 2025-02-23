@@ -29,8 +29,6 @@ export default function Navbar({ darkMode, setDarkMode }) {
     <Link to="/">
       <ImHome className='text-xl cursor-pointer' />
     </Link>
-      {/* <li className={navItemText}><Link to="/">Home</Link></li>
-      <li className={navItemText}><Link to="/dashboard">Dashboard</Link></li> */}
     </>
   );
 
@@ -56,12 +54,9 @@ export default function Navbar({ darkMode, setDarkMode }) {
               <h3 className='text-xl font-extrabold hidden sm:block text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-purple-700 to-pink-600'>TaskNexus</h3>
             </Link>
           </div>
-          <div className="navbar-center hidden md:flex">
-            <ul className="menu menu-horizontal px-1">
-              {navItem}
-            </ul>
-          </div>
+
           <div className="navbar-end gap-3">
+          {navItem}
             {/* Dark Mode Toggle */}
             <button
               onClick={() => setDarkMode(!darkMode)}
@@ -73,12 +68,32 @@ export default function Navbar({ darkMode, setDarkMode }) {
             {user ? (
               <>
                 <div className='hidden md:block '>
+              
+
                   <Link to="/dashboard" className="inline-flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-blue-800  to-pink-600 z-20 text-white rounded-lg">
                     < BsDatabaseFillDash/>
                       Dashboard
                   </Link>
                 </div>
-                <button onClick={handleSignOut} className="btn">Log Out</button>
+                <div className="flex gap-2">
+    <div className="dropdown dropdown-end">
+      <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+        <div className="w-10 rounded-full">
+          <img
+            alt="Tailwind CSS Navbar component"
+            src={user.photoURL} />
+        </div>
+      </div>
+      <ul
+        tabIndex={0}
+        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+        
+        <p className='p-2'>{user.email}</p>
+        <button onClick={handleSignOut} className="btn">Log Out</button>
+      </ul>
+    </div>
+    </div>
+                
               </>
             ) : (
               <Link to="/login" className="btn">Login</Link>

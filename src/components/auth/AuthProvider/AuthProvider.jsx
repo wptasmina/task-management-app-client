@@ -57,7 +57,6 @@ export default function AuthProvider({children}) {
       return signInWithPopup(auth, Provider)
     }
 
- 
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
