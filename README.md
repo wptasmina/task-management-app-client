@@ -1,4 +1,6 @@
-![Task Board UI](https://your-image-url.com)
+# Task Management Application
+
+![Task_management](https://github.com/user-attachments/assets/a9ec146e-386d-4f5e-8c7d-4e8a2425e257)
 
 
 # Task Management Application
