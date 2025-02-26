@@ -14,11 +14,15 @@ This Task Management Application allows users to add, edit, delete, and reorder 
 
 ### GitHub Repository Link:
 
+ Backend (server-site):
+
+Front-End (client-site): 
+
 ## Frontend Repository
 The frontend for this project can be found here: [Task Management App Frontend](https://github.com/wptasmina/task-management-app-client)
 
 ## Backend Repository
-The frontend for this project can be found here: [Task Management App Frontend](https://github.com/wptasmina/task-management-app-server)
+The frontend for this project can be found here: [Task Management App Frontend]( https://github.com/wptasmina/task-management-app-server)
 
 ```
 
