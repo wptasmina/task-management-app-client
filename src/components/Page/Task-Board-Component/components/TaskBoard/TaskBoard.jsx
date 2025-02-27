@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import TaskModal from "../TaskModal/TaskModal";
 import { toast } from "react-toastify";
@@ -6,13 +6,16 @@ import useAxiosPublic from "../hokes/useAxiosPublic";
 import { FaPenToSquare } from "react-icons/fa6";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../../auth/AuthProvider/AuthProvider";
 
 const categories = ["To-Do", "In Progress", "Done"];
 
 export default function TaskBoard({ darkMode }) {
   const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
+  const {user} = useContext(AuthContext)
 
+ 
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -23,7 +26,7 @@ export default function TaskBoard({ darkMode }) {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axiosPublic.get("/tasks");
+        const response = await axiosPublic.get(`/tasks?email=${user.email}`);
         setTasks(response.data);
       } catch (err) {
         console.error("Error fetching tasks:", err);
@@ -32,8 +35,11 @@ export default function TaskBoard({ darkMode }) {
         setLoading(false);
       }
     };
-    fetchTasks();
-  }, [tasks, modalOpen]);  // This will refetch when tasks are updated.
+  
+    if (user?.email) {
+      fetchTasks();
+    }
+  }, [tasks,modalOpen, user?.email]);
   
   // Add a new task
   const onSubmit = async (data) => {
@@ -47,6 +53,7 @@ export default function TaskBoard({ darkMode }) {
     }
 
     const newTask = {
+      email: user.email,
       title: data.title,
       description: data.description,
       timestamp: new Date().toLocaleString(),
@@ -65,7 +72,7 @@ export default function TaskBoard({ darkMode }) {
     }
     setModalOpen(false);
   };
-
+    
   // Update task
   const updateTask = async (updatedTask) => {
     if (!updatedTask.title || updatedTask.title.length > 50) {
@@ -90,6 +97,7 @@ export default function TaskBoard({ darkMode }) {
     setModalOpen(false);
   };
 
+  
   // Delete task
   const handleDelete = async (id) => {
     try {
@@ -134,7 +142,7 @@ export default function TaskBoard({ darkMode }) {
         toast.success("Task moved successfully!");
         
         // Refetch tasks after the move to ensure UI consistency
-        const response = await axiosPublic.get("/tasks");
+        const response = await axiosPublic.get(`/tasks?email=${user.email}`);
         setTasks(response.data);
       } catch (error) {
         console.error("Failed to update task:", error);

@@ -16,9 +16,8 @@ export default function LoginPage() {
     // Password visibility state
     const [passwordVisible, setPasswordVisible] = useState(false);
     const togglePasswordVisibility = () => setPasswordVisible(!passwordVisible);
-    // const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm();
 
-  const hendleLogin = async(e) =>{
+  const handleLogin = async(e) =>{
     e.preventDefault()
     const form = e.target;
     const email = form.email.value;
@@ -35,26 +34,25 @@ export default function LoginPage() {
           console.error("Registration failed:", error);
           toast.error('User Login UnSuccessfull! Please Vailade Email')
         }
-    
     form.reset()
-
-
   }
 
-    // Handle Google Login
+
+    //Handle Google Login
     const handleGoogleSignIn = async () => {
       try {
         await handleGoogleLogin();
-  
-        // Redirect user to home page or the path they were trying to access
-        const redirectPath = location.state?.from?.pathname || "/";
+        const redirectPath = location.state?.from?.pathname || "/dashboard";
         navigate(redirectPath);
         toast.success("Welcome Back!");
+
       } catch (error) {
         toast.error("Google Sign-in failed");
         console.error("Google Sign-in error:", error.message);
       }
     };
+
+    
   
   return (
   <div className=" bg-base-200 min-h-screen pt-16">
@@ -70,7 +68,7 @@ export default function LoginPage() {
       </Link>
     <h1 className="text-4xl font-bold text-center">Login now!</h1>
     </div>
-      <form onSubmit={hendleLogin} className="card-body">
+      <form onSubmit={handleLogin} className="card-body">
         <fieldset className="fieldset">
           <label className="fieldset-label">Email</label>
           <input type="email" name='email' className="input border border-gray-300 rounded-lg focus:ring-[#1753c2] focus:border-[#1753c2] focus:outline-none" placeholder="Email" />

@@ -19,6 +19,7 @@ export default function Ragister() {
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
+    const photoURL = form.photoURL.value;
     const password = form.password.value;
 
 
@@ -38,6 +39,8 @@ export default function Ragister() {
 
   }
 
+  
+
   return (
 <div>
 <div className=" bg-base-200 min-h-screen pt-10">
@@ -54,11 +57,13 @@ export default function Ragister() {
           <label className="fieldset-label">Email</label>
           <input type="email" name='email' className="input border border-gray-300 rounded-lg focus:ring-[#1753c2] focus:border-[#1753c2] focus:outline-none" placeholder="Email" />
 
+          <label className="fieldset-label">PhotoURL</label>
+          <input type="text" name='photoURL' className="input border border-gray-300 rounded-lg focus:ring-[#1753c2] focus:border-[#1753c2] focus:outline-none" placeholder="PhotoURL" />
+
 
           {/* Password */}
           <label className="fieldset-label">Password</label>
           <div className="mb-4 relative">
-            {/* <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="password">Password</label> */}
             <input
               type={passwordVisible ? "text" : "password"}
               id="password"

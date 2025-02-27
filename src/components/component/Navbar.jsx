@@ -76,7 +76,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
       <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
         <div className="w-10 rounded-full">
           <img
-            alt="Tailwind CSS Navbar component"
+            alt={user.name}
             src={user.photoURL} />
         </div>
       </div>
