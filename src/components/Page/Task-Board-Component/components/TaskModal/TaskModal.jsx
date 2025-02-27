@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function TaskModal({ task, onSave, onClose }) {
+export default function TaskModal({ task, onSave, onClose, darkMode }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("To-Do");
@@ -21,15 +21,15 @@ export default function TaskModal({ task, onSave, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4">
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-96 shadow-lg">
+    <div className="fixed inset-0 bg-[#111] bg-opacity-50 flex items-center justify-center px-4">
+      <div className={`p-6 rounded-lg w-96 shadow-lg ${darkMode ? "bg-gray-900 text-white" : "bg-white text-black"}`}>
         <h2 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">
           {task ? "Edit Task" : "Add Task"}
         </h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="bg-white">
           <input
             type="text"
-            className="w-full p-2 border rounded mb-3 bg-gray-100 dark:bg-gray-700 dark:text-white"
+            className="w-full p-2 border   rounded mb-3  bg-gray-100 dark:bg-gray-700 dark:text-black"
             placeholder="Task Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -37,14 +37,14 @@ export default function TaskModal({ task, onSave, onClose }) {
             maxLength={50}
           />
           <textarea
-            className="w-full p-2 border rounded mb-3 bg-gray-100 dark:bg-gray-700 dark:text-white"
+            className="w-full p-2 border text-black rounded mb-3 bg-gray-100 dark:bg-gray-700 dark:text-black"
             placeholder="Task Description (optional)"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             maxLength={200}
           ></textarea>
           <select
-            className="w-full p-2 border rounded mb-3 bg-gray-100 dark:bg-gray-700 dark:text-white"
+            className="w-full p-2 border text-black rounded mb-3 bg-gray-100 dark:bg-gray-700 dark:text-black"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >

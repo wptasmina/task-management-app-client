@@ -9,17 +9,17 @@ import { useNavigate } from "react-router-dom";
 
 const categories = ["To-Do", "In Progress", "Done"];
 
-export default function TaskBoard({darkMode }) {
+export default function TaskBoard({ darkMode }) {
   const axiosPublic = useAxiosPublic();
+  const navigate = useNavigate();
 
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
-  const navigate = useNavigate()
 
-  // ✅ Fetch tasks once when component mounts
+  // Fetch tasks
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -32,29 +32,27 @@ export default function TaskBoard({darkMode }) {
         setLoading(false);
       }
     };
-
     fetchTasks();
   }, [tasks]);
 
-  // ✅ Add a new task
+  // Add a new task
   const onSubmit = async (data) => {
     if (!data.title || data.title.length > 50) {
       toast.error("Title is required and must be less than 50 characters.");
       return;
     }
-  
     if (data.description && data.description.length > 200) {
       toast.error("Description must be less than 200 characters.");
       return;
     }
-  
+
     const newTask = {
       title: data.title,
       description: data.description,
       timestamp: new Date().toLocaleString(),
       category: data.category,
     };
-  
+
     try {
       const res = await axiosPublic.post("/tasks", newTask);
       if (res.data) {
@@ -67,20 +65,18 @@ export default function TaskBoard({darkMode }) {
     }
     setModalOpen(false);
   };
-  
 
-  // ✅ Update an existing task
+  // Update task
   const updateTask = async (updatedTask) => {
     if (!updatedTask.title || updatedTask.title.length > 50) {
       toast.error("Title must be less than 50 characters.");
       return;
     }
-  
     if (updatedTask.description && updatedTask.description.length > 200) {
       toast.error("Description must be less than 200 characters.");
       return;
     }
-  
+
     try {
       const res = await axiosPublic.put(`/tasks/${updatedTask._id}`, updatedTask);
       if (res.data) {
@@ -93,9 +89,8 @@ export default function TaskBoard({darkMode }) {
     }
     setModalOpen(false);
   };
-  
 
-  // ✅ Delete a task
+  // Delete task
   const handleDelete = async (id) => {
     try {
       await axiosPublic.delete(`/tasks/${id}`);
@@ -107,40 +102,43 @@ export default function TaskBoard({darkMode }) {
     }
   };
 
-  // ✅ Handle drag-and-drop updates
+  // Handle drag-and-drop
   const handleDragEnd = async (result) => {
     if (!result.destination) return;
 
     const { source, destination, draggableId } = result;
+    const updatedTasks = Array.from(tasks);
+    const draggedTaskIndex = updatedTasks.findIndex(task => task._id === draggableId);
+    if (draggedTaskIndex === -1) return;
 
-    // If moved within the same category
-    if (source.droppableId === destination.droppableId) {
-      const categoryTasks = [...tasks.filter(task => task.category === source.droppableId)];
-      const [movedTask] = categoryTasks.splice(source.index, 1);
-      categoryTasks.splice(destination.index, 0, movedTask);
+    const draggedTask = updatedTasks[draggedTaskIndex];
+    updatedTasks.splice(draggedTaskIndex, 1);
+    updatedTasks.splice(destination.index, 0, draggedTask);
 
-      setTasks([
-        ...tasks.filter(task => task.category !== source.droppableId),
-        ...categoryTasks
-      ]);
-    } else {
-      // If moved to a different category, update in database
-      const movedTask = tasks.find(task => task._id === draggableId);
-      const updatedTask = { ...movedTask, category: destination.droppableId };
-
-      await updateTask(updatedTask);
+    // If category changed, update it
+    if (source.droppableId !== destination.droppableId) {
+      draggedTask.category = destination.droppableId;
+      try {
+        await axiosPublic.put(`/tasks/${draggedTask._id}`, draggedTask);
+        toast.success("Task moved successfully!");
+      } catch (error) {
+        console.error("Failed to update task:", error);
+        toast.error("Failed to move task.");
+        return;
+      }
     }
+
+    setTasks(updatedTasks);
   };
 
-  // ✅ Open modal for add/edit
+  // Open modal for add/edit
   const openModal = (task = null) => {
     setEditingTask(task);
     setModalOpen(true);
   };
 
   return (
-    <div className={"py-6 w-11/12 mx-auto"} >
-
+    <div className="py-6 w-11/12 mx-auto">
       <button
         onClick={() => openModal()}
         className="mb-4 px-4 py-2 bg-green-600 text-white rounded-lg cursor-pointer"
@@ -148,14 +146,14 @@ export default function TaskBoard({darkMode }) {
         + Add Task
       </button>
 
-      {/* Show loading or error message */}
+      {/* Loading and error states */}
       {loading ? (
         <p>Loading tasks...</p>
       ) : error ? (
         <p className="text-red-500">{error}</p>
       ) : (
         <DragDropContext onDragEnd={handleDragEnd}>
-          <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 ${darkMode ? "bg-gray-900 text-white" : " bg-transparent text-black"}`}>
+          <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 ${darkMode ? "bg-gray-900 text-white" : "bg-transparent text-black"}`}>
             {categories.map((category) => (
               <Droppable key={category} droppableId={category}>
                 {(provided) => (
@@ -165,44 +163,43 @@ export default function TaskBoard({darkMode }) {
                     className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-lg min-h-[300px]"
                   >
                     <h2 className="text-xl font-bold text-center mb-4">{category}</h2>
+
                     {tasks
                       .filter((task) => task.category === category)
-                      .map((task, idx) =>
-                        task._id ? (
-                          <Draggable key={task._id} draggableId={task._id.toString()} index={idx}>
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                className="bg-white dark:bg-gray-700 p-3 mb-3 rounded-lg shadow-md cursor-pointer"
-                                onClick={() => openModal(task)}
-                              >
-                                <h4 className="font-bold">{task.title}</h4>
-                                <p className="text-sm text-gray-500">{task.description}</p>
-                                
-                                <div className="flex justify-between items-center py-4 gap-2">
-                                <span className="text-xs text-gray-400">{task.timestamp}</span>
-                                  <div className="flex gap-2 items-center">
-                                  <button onClick={() => navigate(`/update-task/${task._id}`)}>
-                                  <FaPenToSquare className="text-xl text-blue-600 cursor-pointer" />
-                                  </button>
+                      .map((task, idx) => (
+                        <Draggable key={task._id} draggableId={task._id.toString()} index={idx}>
+                          {(provided) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              className="bg-white dark:bg-gray-700 p-3 mb-3 rounded-lg shadow-md cursor-pointer"
+                              onClick={() => openModal(task)}
+                            >
+                              <h4 className="font-bold">{task.title}</h4>
+                              <p className="text-sm text-gray-500">{task.description}</p>
 
+                              <div className="flex justify-between items-center py-4 gap-2">
+                                <span className="text-xs text-gray-400">{task.timestamp}</span>
+                                <div className="flex gap-2 items-center">
+                                  <button onClick={() => navigate(`/update-task/${task._id}`)}>
+                                    <FaPenToSquare className="text-xl text-blue-600 cursor-pointer" />
+                                  </button>
                                   <button
                                     onClick={(e) => {
-                                      e.stopPropagation(); // Prevent event from triggering modal
+                                      e.stopPropagation();
                                       handleDelete(task._id);
                                     }}
                                   >
                                     <RiDeleteBin6Fill className="text-xl text-red-500 cursor-pointer" />
                                   </button>
-                                  </div>
                                 </div>
                               </div>
-                            )}
-                          </Draggable>
-                        ) : null
-                      )}
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+
                     {provided.placeholder}
                   </div>
                 )}
@@ -215,11 +212,10 @@ export default function TaskBoard({darkMode }) {
       {modalOpen && (
         <TaskModal
           task={editingTask}
-          onSave={editingTask ? updateTask : onSubmit} // ✅ Use updateTask for editing
+          onSave={editingTask ? updateTask : onSubmit}
           onClose={() => setModalOpen(false)}
         />
       )}
-
     </div>
   );
 }

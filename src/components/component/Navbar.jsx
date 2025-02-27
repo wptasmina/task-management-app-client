@@ -22,8 +22,6 @@ export default function Navbar({ darkMode, setDarkMode }) {
         console.log("Failed to sign out");
       });
   };
-
-  // const navItemText = 'focus:text-blue-900 font-bold';
   const navItem = (
     <>
     <Link to="/">
@@ -68,8 +66,6 @@ export default function Navbar({ darkMode, setDarkMode }) {
             {user ? (
               <>
                 <div className='hidden md:block '>
-              
-
                   <Link to="/dashboard" className="inline-flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-blue-800  to-pink-600 z-20 text-white rounded-lg">
                     < BsDatabaseFillDash/>
                       Dashboard
@@ -86,7 +82,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
       </div>
       <ul
         tabIndex={0}
-        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+        class= {`menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow ${darkMode ? "bg-gray-700 text-white" : "bg-base-100 text-gray-900"}`} >
         
         <p className='p-2'>{user.email}</p>
         <button onClick={handleSignOut} className="btn">Log Out</button>

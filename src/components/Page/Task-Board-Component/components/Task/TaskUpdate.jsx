@@ -14,7 +14,7 @@ const TaskUpdate = () => {
   useEffect(() => {
     const fetchTask = async () => {
       try {
-        const response = await axios.get(`https://task-managment-app-server-omega.vercel.app/tasks/${id}`);
+        const response = await axios.get(`https://task-managment-app-server-hazel.vercel.app/tasks/${id}`);
         setTask(response.data);
       } catch (err) {
         console.error("Error fetching task:", err);
@@ -49,7 +49,7 @@ const TaskUpdate = () => {
     const updatedTask = { title, description, category };
 
     try {
-      const response = await axios.put(`https://task-managment-app-server-omega.vercel.app/tasks/${id}`, updatedTask);
+      const response = await axios.put(`https://task-managment-app-server-hazel.vercel.app/tasks/${id}`, updatedTask);
       if (response.data) {
         toast.success("Task updated successfully!");
         navigate("/dashboard"); // Redirect back to task board after update

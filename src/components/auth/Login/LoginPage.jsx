@@ -57,16 +57,18 @@ export default function LoginPage() {
     };
   
   return (
-    <div className=" bg-base-200 min-h-screen">
+  <div className=" bg-base-200 min-h-screen pt-16">
   <div className="hero-content flex-col lg:flex-row-reverse">
-    <div className="text-center lg:text-left hidden md:block w-3/6">
+    <div className="text-center lg:text-left hidden md:block w-2/6">
       
     <Lottie animationData={loginAm} />
     </div>
-    <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-    <div className="flex justify-center gap-4 items-center pt-4">
-    <IoHome className="text-2xl"/>
-    <h1 className="text-4xl font-bold text-center ">Login now!</h1>
+    <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-lg">
+    <div className="flex justify-center gap-4 items-center pt-6">
+      <Link to="/">
+        <IoHome className="text-2xl"/>
+      </Link>
+    <h1 className="text-4xl font-bold text-center">Login now!</h1>
     </div>
       <form onSubmit={hendleLogin} className="card-body">
         <fieldset className="fieldset">

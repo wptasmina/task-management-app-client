@@ -21,22 +21,13 @@ export default function Ragister() {
     const email = form.email.value;
     const password = form.password.value;
 
-     // Password validation
-    //  const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/;
-    //  if (!passwordRegex.test(password)) {
-    //  toast.error("Password must be at least 6 characters, include one uppercase letter, and one number.");
-    //  return;
-    //  }
-        
-
-    //show password vaildation error
 
     try {
       await createUser(email, password); 
       console.log("User successfully registered!");
       toast.success('User successfully registered!')
 
-      navigate("/");
+      navigate("/dashboard");
 
     } catch (error) {
       console.error("Registration failed:", error);
@@ -45,38 +36,29 @@ export default function Ragister() {
 
     form.reset()
 
-    // const createUser = (email, password) => {
-    //   return new Promise((resolve, reject) => {
-    //     setTimeout(() => {
-    //       console.log("User created:", email);
-    //       resolve("Success");
-    //     }, 1000);
-    //   });
-    // };
-
-
   }
 
   return (
 <div>
-<div className=" bg-base-200 min-h-screen">
+<div className=" bg-base-200 min-h-screen pt-10">
   <div className="hero-content flex-col lg:flex-row-reverse">
-    <div className="text-center lg:text-left hidden md:block w-3/6">
+    <div className="text-center lg:text-left hidden md:block w-2/6">
        <Lottie animationData={register} />
     </div>
-    <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-    <h1 className="text-4xl text-center font-bold pt-4">Register</h1>
+    <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-lg">
+    <h1 className="text-4xl text-center font-bold pt-6">Register</h1>
       <form onSubmit={hendleRegister} className="card-body">
         <fieldset className="fieldset">
           <label className="fieldset-label">Name</label>
           <input type="name" name='name' className="input border border-gray-300 rounded-lg focus:ring-[#1753c2] focus:border-[#1753c2] focus:outline-none" placeholder="Name" />
           <label className="fieldset-label">Email</label>
           <input type="email" name='email' className="input border border-gray-300 rounded-lg focus:ring-[#1753c2] focus:border-[#1753c2] focus:outline-none" placeholder="Email" />
-          <label className="fieldset-label">Password</label>
+
 
           {/* Password */}
+          <label className="fieldset-label">Password</label>
           <div className="mb-4 relative">
-            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="password">Password</label>
+            {/* <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="password">Password</label> */}
             <input
               type={passwordVisible ? "text" : "password"}
               id="password"

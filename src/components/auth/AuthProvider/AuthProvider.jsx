@@ -48,6 +48,7 @@ export default function AuthProvider({children}) {
     return signOut(auth)
   }
 
+  
     // GoogleProvider create
     const Provider = new GoogleAuthProvider(); 
 

@@ -23,13 +23,6 @@ export default function Dashboard() {
               {/* Navbar Component */}
               <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
             <div className={darkMode ? "dark bg-gray-900 text-white min-h-screen" : "bg-gray-100 text-black min-h-screen"}>
-              {/* <Navbar /> */}
-                {/* <button
-                    onClick={() => setDarkMode(!darkMode)}
-                    className="p-2 bg-gray-500 text-white rounded m-4"
-                >
-                    Toggle Dark Mode
-                </button> */}
                 <TaskBoard />
             </div>
         </>
