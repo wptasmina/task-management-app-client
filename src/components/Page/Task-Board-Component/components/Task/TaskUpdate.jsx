@@ -115,7 +115,7 @@ const TaskUpdate = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition outline-none focus:outline-none"
+          className="w-full bg-blue-700 hover:bg-blue-800 cursor-pointer text-white py-2 rounded-lg transition outline-none focus:outline-none"
         >
           Update Task
         </button>

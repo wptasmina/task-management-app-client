@@ -19,12 +19,12 @@ export default function Ragister() {
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
-    const photoURL = form.photoURL.value;
+    const photoURL = form.photo.value;
     const password = form.password.value;
 
 
     try {
-      await createUser(email, password); 
+      await createUser(email, password, name, photoURL); 
       console.log("User successfully registered!");
       toast.success('User successfully registered!')
 
@@ -34,14 +34,10 @@ export default function Ragister() {
       console.error("Registration failed:", error);
       toast.error('User Registration UnSuccessfull!')
     }
-
     form.reset()
-
   }
 
-  
-
-  return (
+return (
 <div>
 <div className=" bg-base-200 min-h-screen pt-10">
   <div className="hero-content flex-col lg:flex-row-reverse">
@@ -58,7 +54,7 @@ export default function Ragister() {
           <input type="email" name='email' className="input border border-gray-300 rounded-lg focus:ring-[#1753c2] focus:border-[#1753c2] focus:outline-none" placeholder="Email" />
 
           <label className="fieldset-label">PhotoURL</label>
-          <input type="text" name='photoURL' className="input border border-gray-300 rounded-lg focus:ring-[#1753c2] focus:border-[#1753c2] focus:outline-none" placeholder="PhotoURL" />
+          <input type="text" name='photo' className="input border border-gray-300 rounded-lg focus:ring-[#1753c2] focus:border-[#1753c2] focus:outline-none" placeholder="PhotoURL" />
 
 
           {/* Password */}

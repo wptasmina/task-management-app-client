@@ -1,14 +1,15 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSubmit } from 'react-router-dom';
 import logo from '/logo.png';
 import { AuthContext } from '../auth/AuthProvider/AuthProvider';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { BsDatabaseFillDash } from "react-icons/bs";
 import { ImHome } from "react-icons/im";
+import auth from '../../Firebase/firebase.inti';
 
 
 export default function Navbar({ darkMode, setDarkMode }) {
-  const { user, signOutUser } = useContext(AuthContext);
+  const { user, signOutUser, updateUserProfile } = useContext(AuthContext);
 
   const navigate = useNavigate()
 
@@ -22,6 +23,8 @@ export default function Navbar({ darkMode, setDarkMode }) {
         console.log("Failed to sign out");
       });
   };
+
+
   const navItem = (
     <>
     <Link to="/">
@@ -75,9 +78,10 @@ export default function Navbar({ darkMode, setDarkMode }) {
     <div className="dropdown dropdown-end">
       <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
         <div className="w-10 rounded-full">
-          <img
-            alt={user.name}
-            src={user.photoURL} />
+        <img 
+        alt={user?.displayName || "User"} 
+       src={user?.photo || "/default-avatar.png"}  
+        />
         </div>
       </div>
       <ul

@@ -51,7 +51,6 @@ export default function LoginPage() {
         console.error("Google Sign-in error:", error.message);
       }
     };
-
     
   
   return (

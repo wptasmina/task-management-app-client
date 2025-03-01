@@ -20,13 +20,41 @@ export default function AuthProvider({children}) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true);
 
-  const updateUserProfile = (name, photo) => {
+  // const updateUserProfile = (name, photo) => {
+  //   setLoading(true);
+  //   return updateProfile(auth.currentUser, {
+  //     displayName: name,
+  //     photoURL: photo,
+  //   });
+  // };
+
+  const updateUserProfile = async (name, photo) => {
     setLoading(true);
-    return updateProfile(auth.currentUser, {
-      displayName: name,
-      photoURL: photo,
-    });
+  
+    if (!auth.currentUser) {
+      console.error("No authenticated user found!");
+      setLoading(false);
+      return;
+    }
+  
+    try {
+      await updateProfile(auth.currentUser, {
+        displayName: name,
+        photoURL: photo,
+      });
+      console.log("Profile updated successfully!");
+  
+      // **Update State to Reflect Changes**
+      setUser({ ...auth.currentUser });
+  
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+  
+
 
   // Register create User
   const createUser = ( email, password ) =>{
@@ -63,7 +91,7 @@ export default function AuthProvider({children}) {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       // console.log(currentUser)
       if (currentUser) {
-        setUser(currentUser);
+        setUser({...currentUser});
         setLoading(false);
       } else {
         setUser(null);
